@@ -9,12 +9,16 @@ import time
 import sys
 import os
 import matplotlib.pyplot as plt
-
+import pyttsx3
 #import cyhunspell
 
 from spellchecker import SpellChecker
 from string import ascii_uppercase
+from gtts import gTTS
+from playsound import playsound
 
+
+engine = pyttsx3.init()
 
 class Application:
     def __init__(self):
@@ -105,6 +109,17 @@ class Application:
         self.T3 = tk.Label(self.root)
         self.T3.place(x=85, y=620)
         self.T3.config(text="Sentence :", font=("Courier", 40, "bold"))
+        
+        
+        self.bt0 = tk.Button(self.root) #button Speak
+        self.bt0.place(x=90, y=720)
+        self.bt0.config(text="Speak", font=("Courier", 15, "bold"))
+  
+        self.bt6 = tk.Button(
+            self.root, command=self. destructor, height=0, width=0)
+        self.bt6.place(x=95, y=820)
+        self.bt6.config(text="Exit", font=("Courier", 15, "bold"))
+        
 
         #self.T4 = tk.Label(self.root)   # suggestions
         #self.T4.place(x=400, y=690)     # x= 400 -> 900    y= 690 -> 480
@@ -115,11 +130,11 @@ class Application:
            # self.root, command=self.action_call, height=0, width=0)
         #self.btcall.config(text="About", font=("Courier", 14))
         #self.btcall.place(x=825, y=0)
-
         self.bt1 = tk.Button(
             self.root, command=self.action1, height=0, width=0)
-        self.bt1.place(x=26, y=890)
-        #self.bt1.grid(padx = 10, pady = 10)
+        self.bt1.place(x=225, y=890)
+        #self.panel3.place(x = 10,y=660)
+
         self.bt2 = tk.Button(
             self.root, command=self.action2, height=0, width=0)
         self.bt2.place(x=325, y=890)
@@ -133,10 +148,6 @@ class Application:
             self.root, command=self.action4, height=0, width=0)
         self.bt4.place(x=125, y=950)
         # self.bt4.grid(row = bt1, column = 0, columnspan = 1, padx = 10, pady = 10, sticky = tk.N)
-        self.bt5 = tk.Button(
-            self.root, command=self.action5, height=0, width=0)
-        self.bt5.place(x=425, y=950)
-        # self.bt5.grid(row = 5, column = 1, columnspan = 1, padx = 10, pady = 10, sticky = tk.N)
         self.str = ""
         self.word = ""
         self.current_symbol = "Empty"
@@ -305,12 +316,23 @@ class Application:
             self.str += " "
             self.str += predicts[3]
 
-    def action5(self):
-        predicts = self.hs.suggest(self.word)
-        if(len(predicts) > 4):
-            self.word = ""
-            self.str += " "
-            self.str += predicts[4]
+    #def action5(self):
+       #predicts = self.hs.suggest(self.word)
+        #if(len(predicts) > 4):
+            #self.word = ""
+            #self.str += " "
+            #self.str += predicts[4]
+
+        def text_to_speech(panel5):
+        # Initialize gTTS with the text to convert
+         speech = gTTS(panel5, lang='en', slow=False, tld='com')
+
+         # Save the audio file to a temporary file
+        speech_file = 'speech.mp3'
+        speech_file.save(speech_file)
+
+         # Play the audio file
+        os.system('afplay ' + speech_file)
 
     def destructor(self):
         print("Closing Application...")
